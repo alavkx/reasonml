@@ -46,7 +46,7 @@ mapi: ((int, 'a) => 'b, array('a)) => array('b)
 
 #### What is the config needed to require css in a similar fashion to the reason-react-hacker-news example project? ie: [`requireCSS("src/CommentList.css");`](https://github.com/reasonml-community/reason-react-hacker-news/blob/8ba4b7855e7c40cd5f2d575beb9a381c8f8ff7e5/src/CommentList.re#L5)
 
-> that function is just [a binding to require()](https://github.com/reasonml-community/reason-react-hacker-news/blob/8ba4b7855e7c40cd5f2d575beb9a381c8f8ff7e5/src/Utils.re#L1-L2), which appears to be webpack in this case with a css loader
+> @mulmus - "that function is just [a binding to require()](https://github.com/reasonml-community/reason-react-hacker-news/blob/8ba4b7855e7c40cd5f2d575beb9a381c8f8ff7e5/src/Utils.re#L1-L2), which appears to be webpack in this case with a css loader"
 
 - [Bucklescript — Intro to external](https://bucklescript.github.io/docs/en/intro-to-external)
 
@@ -54,12 +54,10 @@ mapi: ((int, 'a) => 'b, array('a)) => array('b)
 
 #### Any idea what Error: Unbound type constructor App.track could mean?
 
-> do the two modules depend on each other in a circular way? I’ve accidentally done that after splitting files up. Circular dependencies are illegal, and the compiler will just not “see” one of them
-> E.g., if App.re uses anything from Player.re then that may be the problem.
-
-`App.re`
+> @johnridesabike — "do the two modules depend on each other in a circular way? I’ve accidentally done that after splitting files up. Circular dependencies are illegal, and the compiler will just not “see” one of them. E.g., if `App.re` uses anything from `Player.re` then that may be the problem."
 
 ```
+/* App.re */
 ...
 type track = {
   name: string,
@@ -69,11 +67,16 @@ type track = {
 <> <Library tracks /> <Player tracks /> </>;
 ```
 
-`Library.re`
-
 ```
+/* Library.re */
 let make = (~tracks: option(array(App.track)), ~playTrack: int => unit) => {
 ```
+
+<hr />
+
+#### Has anyone messed around with xstate concepts in reason?
+
+> @gabrielrabreu — "I have thrown [some ideas in this sketch](https://sketch.sh/s/IaSD7pEAjjt0SqYiE9chXs/) but did not finished it yet"
 
 <hr />
 
