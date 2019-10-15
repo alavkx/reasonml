@@ -88,7 +88,9 @@ module Button = {
     (~onClick: unit => unit, ~className: string, ~children: React.element) =>
 ...
 ```
-if I take it out I get an error
+
+If I take it out I get an error
+
 ```ocaml
   163 ┆ }>
   164 ┆ <div>
@@ -100,7 +102,9 @@ if I take it out I get an error
     (~key: string=?) => {. "className": string, "onClick": unit => unit}
 This argument cannot be applied with label ~children
 ```
+
 If I include it, I get an error in a different usage of Button
+
 ```ocaml
   284 ┆   ])}>
   285 ┆   <div>
@@ -110,10 +114,35 @@ If I include it, I get an error in a different usage of Button
   
   This call is missing an argument of type (~children: React.element)
 ```
+
+
 > @yawaramin - "Try ~children: React.element=?"
+
+
 ```ocaml
 (~onClick: unit => unit, ~className: string, ~children: React.element=?) =>
 ```
+
+<hr />
+
+#### Why does Js.Promise expect a generic here?
+```ocaml
+let getTemplates = (~accountId: string, ~domain: string) => {
+  FlowBuilderApi.getFlowBuilderApiClient()##get(
+    "/accounts/" ++ accountId ++ "/step-templates?domain=" ++ domain,
+  )
+  ->Js.Promise.then_(res => res##data##data##templates);
+};
+```
+```ocaml
+This has type:
+  Js.Promise.t(FlowBuilderApi.response) (defined as
+    Js.Promise.t(FlowBuilderApi.response))
+
+But somewhere wanted:
+    'a => Js.Promise.t('b)
+```
+> @yawaramin - "use |> instead of -> here. Js.Promise.then_ is written in t-last argument order"
 
 ## Resources
 
