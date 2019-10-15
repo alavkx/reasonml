@@ -80,6 +80,41 @@ let make = (~tracks: option(array(App.track)), ~playTrack: int => unit) => {
 
 <hr />
 
+#### When defining a binding to a JS component, are we supposed to include children?
+```ocaml
+module Button = {
+  [@bs.module "components/base/Button.js"] [@react.component]
+  external make:
+    (~onClick: unit => unit, ~className: string, ~children: React.element) =>
+...
+```
+if I take it out I get an error
+```ocaml
+  163 ┆ }>
+  164 ┆ <div>
+  165 ┆   <Button
+  166 ┆     className=Styles.templateOption
+  167 ┆     onClick={_ =>
+  
+  The function applied to this argument has type
+    (~key: string=?) => {. "className": string, "onClick": unit => unit}
+This argument cannot be applied with label ~children
+```
+If I include it, I get an error in a different usage of Button
+```ocaml
+  284 ┆   ])}>
+  285 ┆   <div>
+  286 ┆     <Button onClick={_ => ()} className=Styles.templateOption />
+  287 ┆   </div>
+  288 ┆ </div>}
+  
+  This call is missing an argument of type (~children: React.element)
+```
+> @yawaramin - "Try ~children: React.element=?"
+```ocaml
+(~onClick: unit => unit, ~className: string, ~children: React.element=?) =>
+```
+
 ## Resources
 
 - [XState -> REState](https://sketch.sh/s/IaSD7pEAjjt0SqYiE9chXs/)
